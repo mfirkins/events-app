@@ -5,7 +5,7 @@
 
 
 
-    <x-form method="POST" action="/store">
+    <x-form method="POST" action="/store" enctype="multipart/form-data">
 
         <div class="row form-group">
             <h2 class="text-white">General</h2>
@@ -30,10 +30,10 @@
                 </select>
                 <br>
                 <label for="image">Image</label>
-                <input id="image" type="file" class="form-control" name="image" name="image">
+                <input id="image" type="file" class="form-control" name="image">
                 <br>
                 <label for="date">Date</label>
-                <input id="date" class="form-control" type="date" />
+                <input id="date" class="form-control" type="date" name="date"/>
                 <br>
                 <label for="time">Time</label>
                 <input type="time" id="time" name="time">
@@ -44,7 +44,7 @@
             <h2 class="text-white">Venue</h2>
             <p> Select a venue or create your own! </p>
             <div class="column">
-                <select class="form-control" id="category">
+                <select class="form-control" id="venue" name="venue">
                     @foreach ($venues as $venue)
                         <option>
                             {{ $venue->name }}
@@ -60,12 +60,12 @@
         <div class="row form-group">
             <h2 class="text-white">Tickets</h2>
             <div class="column">
-                <label for="eventName">Amount</label>
-                <input type="text" class="form-control" id="city" placeholder="Some Cool City">
+                <label for="amount">Amount</label>
+                <input type="text" class="form-control" id="amount" name="amount">
             </div>
             <div class="column">
-                <label for="eventName">Cost</label>
-                <input type="text" class="form-control" id="city" placeholder="50.00">
+                <label for="cost">Cost</label>
+                <input type="text" class="form-control" id="cost" placeholder="50.00" name="cost">
             </div>
         </div>
         <hr class="text-white">
@@ -74,14 +74,14 @@
             <br>
             <p> You can attach your user to an event or you can enter a custom host name </p>
             <div class="justify-content-center column">
-                <input class="form-check-input" type="checkbox" value="" id="use-user" onclick="useUserCheckBox()">
+                <input class="form-check-input" type="checkbox" value="" id="use-user" onclick="useUserCheckBox()" name="use_user">
                 <label class="form-check-label" for="flexCheckDefault">
                     Use user profile as host
                 </label>
             </div>
             <div class="column">
-                <label for="eventName">Host Name</label>
-                <input type="text" class="form-control" id="host_name" placeholder="Some Cool City">
+                <label for="host_name">Host Name</label>
+                <input type="text" class="form-control" id="host_name" name="host_name">
             </div>
         </div>
         <br>
