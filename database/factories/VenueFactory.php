@@ -21,13 +21,13 @@ class VenueFactory extends Factory
         $city = fake()->city();
         $name = "$city $suffix";
         $random_file_number = fake()->numberBetween(1,4);
-        $image_path = asset("storage/images/venue_defaults/$random_file_number.jpg");
+        $image_name = $random_file_number . ".jpg";
 
         return [
             'name' => $name,
             'description' => fake()->paragraph(20),
             'city' => $city,
-            'image_path' => $image_path,
+            'image_name' => $image_name,
             'user_id' => function () {
                 return User::factory()->create();
             },
