@@ -37,7 +37,7 @@
     }
 </style>
 
-<form method={{ $method }} action={{ $action }} id="div-container">
+<form method={{ $method }} action={{ $action }} enctype={{ $enctype }} id="div-container">
     @csrf
     <div id="div-box">
         {{ $slot }}
