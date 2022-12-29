@@ -10,10 +10,10 @@ class Venue extends Model
     use HasFactory;
 
     public function events(){
-        $this->hasMany(Event::class);
+        return $this->hasMany(Event::class);
     }
 
     public function user(){
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
