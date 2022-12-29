@@ -27,10 +27,14 @@ Route::get('/', [EventController::class, 'index'])->name('home');
 
 Route::get('/create', [EventController::class, 'create'])->name('create_event');
 
-Route::get('/{id}', [EventController::class, 'show']);
+Route::get('/venues', [VenueController::class, 'index'])->name('venues.index');
 
 Route::post('/venues', [VenueController::class, 'store'])->name('store_venue');
 
 Route::get('/venues/create', [VenueController::class, 'create'])->name('create_venue');
 
+Route::get('/venues/{id}', [VenueController::class, 'show']);
+
 Route::get('/category/{id}', [CategoryController::class, 'show']);
+
+Route::get('/{id}', [EventController::class, 'show']);
