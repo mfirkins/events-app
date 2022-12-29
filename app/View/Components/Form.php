@@ -9,15 +9,17 @@ class Form extends Component
 
     public $method;
     public $action;
+    public $enctype;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($method, $action)
+    public function __construct($method, $action, $enctype)
     {
         $this->method = $method;
         $this->action = $action;
+        $this->enctype = $enctype;
 
     }
 
