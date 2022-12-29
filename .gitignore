@@ -23,4 +23,5 @@ Homestead.json
 /.vagrant
 .phpunit.result.cache
 .DS_Store
-
+artisan
+.editorconfig
