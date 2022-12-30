@@ -18,7 +18,7 @@
             @foreach ($events->sortBy('time') as $event)
                 <div class="col mt-4">
                     <div class="shadow-lg p-1 card bg-light mx-auto" style="width: 18rem;">
-                        <img src="{{ $event->image_path }}" class="card-img-top" alt="event description">
+                        <img src="/storage/images/event_pictures/{{ $event->image_name }}" class="card-img-top" alt="event description">
                         <div class="card-body">
                             <h5 class="card-title"><b>{{ $event->name }}</b></h5>
                             <h6>Date: <b>{{ Carbon\Carbon::parse($event->time)->toFormattedDateString() }}</b></h6>
