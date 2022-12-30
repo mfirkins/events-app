@@ -23,11 +23,12 @@ use App\Http\Controllers\VenueController;
 Auth::routes();
 
 Route::get('/', [EventController::class, 'index'])->name('home');
-
+Route::post('/', [EventController::class, 'store'])->name('events.store');
 
 Route::get('/create', [EventController::class, 'create'])->name('create_event');
 
 Route::get('/venues', [VenueController::class, 'index'])->name('venues.index');
+
 
 Route::post('/venues', [VenueController::class, 'store'])->name('store_venue');
 
