@@ -2,7 +2,7 @@
 
 <style>
     #event-detail-image {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("{{ $event->image_path }}");
+        background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("storage/images/event_pictures/{{ $event->image_name }}");
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -90,16 +90,34 @@
             </div>
             <div class="tab-pane fade" id="venue-tab-pane" role="tabpanel" aria-labelledby="venue-tab" tabindex="0">
                 <br>
-                <h4>{{ $event->venue->name }}</h4>
+                <a href="/venues/{{ $event->venue->id }}">
+                    <h4>{{ $event->venue->name }}</h4>
+                </a>
                 <p>{{ $event->venue->description }}</p>
-                <h5> Accessible:
-                    @if ($event->venue->accessible == 0)
-                        Not Available
-                    @else
-                        Available
-                    @endif
-
-                </h5>
+                @if ($event->venue->accessible == 0)
+                    <div class="shadow-lg p-1 card bg-danger" style="width: 18rem;">
+                        <div class="card-header text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
+                                class="bi bi-universal-access" viewBox="0 0 16 16">
+                                <path
+                                    d="M9.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM6 5.5l-4.535-.442A.531.531 0 0 1 1.531 4H14.47a.531.531 0 0 1 .066 1.058L10 5.5V9l.452 6.42a.535.535 0 0 1-1.053.174L8.243 9.97c-.064-.252-.422-.252-.486 0l-1.156 5.624a.535.535 0 0 1-1.053-.174L6 9V5.5Z" />
+                            </svg>
+                            Not Accessible
+                        </div>
+                    </div>
+                @else
+                    <div class="shadow-lg p-1 card bg-contrast" style="width: 18rem;">
+                        <div class="card-header text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
+                                class="bi bi-universal-access" viewBox="0 0 16 16">
+                                <path
+                                    d="M9.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM6 5.5l-4.535-.442A.531.531 0 0 1 1.531 4H14.47a.531.531 0 0 1 .066 1.058L10 5.5V9l.452 6.42a.535.535 0 0 1-1.053.174L8.243 9.97c-.064-.252-.422-.252-.486 0l-1.156 5.624a.535.535 0 0 1-1.053-.174L6 9V5.5Z" />
+                            </svg>
+                            Accessible
+                        </div>
+                    </div>
+                @endif
+                <br>
                 <h4>Location</h4>
                 <div class="iframe-rwd">
                     <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
