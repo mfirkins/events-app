@@ -43,7 +43,7 @@ class VenueController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:App\Models\Venue,name',
             'description' => 'required|max:1000',
             'image' => 'mimes:jpg,png,jpeg|max:5048',
             'city' => 'required|max:100',
