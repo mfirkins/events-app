@@ -21,11 +21,36 @@ class EventFactory extends Factory
     public function definition()
     {
         $name = fake()->randomElement(['Concert', 'Fayre', 'Conference', 'Trade Show', 'Webinar', 'Rugby Match']);
-        $random_file_number = fake()->numberBetween(1,4);
-        $image_path = asset("storage/images/event_defaults/$name/$random_file_number.jpg");
+        switch($name){
+            case ($name == 'Concert'):
+                $image_path = "1.jpg";
+                break;
+            
+            case ($name == 'Fayre'):
+                $image_path = "2.jpg";
+                break;
+            
+            case ($name == 'Conference'):
+                $image_path = "3.jpg";
+                break;
+            
+            case ($name == 'Trade Show'):
+                $image_path = "5.jpg";
+                break;
+            
+            case ($name == 'Webinar'):
+                $image_path = "6.jpg";
+                break;
+            
+            case ($name == 'Rugby Match'):
+                $image_path = "4.jpg";
+                break;
+            
+        }
+        
         return [
             'name' => $name,
-            'image_path' => $image_path,
+            'image_name' => $image_path,
             'description' => fake()->paragraph(20),
             'time' => fake()->dateTimeThisDecade(),
             'user_id' => function () {
