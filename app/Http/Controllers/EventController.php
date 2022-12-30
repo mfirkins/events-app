@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
@@ -31,10 +32,9 @@ class EventController extends Controller
     {
         $categories = Category::all();
         $venues = Venue::all();
-        if (Auth::check()){
+        if (Auth::check()) {
             return view('events.create', ['categories' => $categories, 'venues' => $venues]);
-        }
-        else{
+        } else {
             return redirect('/login');
         }
 
@@ -48,35 +48,48 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validateRules = [
             'name' => 'required|max:255',
             'description' => 'required|max:1000',
             'image' => 'mimes:jpg,png,jpeg|max:5048',
-            'city' => 'required|max:100',
-            'longitude' => 'required|numeric|between:-90, 90',
-            'latitude' => 'required|numeric|between:-180, 180',
+            'date' => 'required|date|after:today',
+            'amount' => 'required|numeric|between: 1, 100000',
+            'cost' => 'required|numeric|decimal:2|between:0, 10000',
+        ];
+        $hostValidate = ['host' => 'required|max:255'];
 
-        ]);
-
+        if ($request['use_user'] == null) {
+            array_merge($validateRules, $hostValidate);
+            $validatedData = $request->validate($validateRules);
+            $host_name = $validatedData['host'];
+        } else {
+            $validatedData = $request->validate($validateRules);
+            $host_name = Auth::user()->name;
+        }
+        
         if ($request->image != null) {
             $imageName = time() . '_' . $request->name . '.' . $request->image->extension();
-            $request->image->storeAs('images/venue_pictures', $imageName, 'public');
+            $request->image->storeAs('images/event_pictures', $imageName, 'public');
 
         } else {
             $imageName = null;
         }
 
-        $venue = new Venue;
-        $venue->name = $validatedData['name'];
-        $venue->description = $validatedData['description'];
-        $venue->image_name = $imageName;
-        $venue->city = $validatedData['city'];
-        $venue->longitude = $validatedData['longitude'];
-        $venue->latitude = $validatedData['latitude'];
-        $venue->user_id = Auth::id();
-        $venue->save();
+        $datetime = $validatedData['date'] . ' ' . $request['time'];
 
-        session()->flash('message', "Venue, $venue->name , was successfully created");
+        $event = new Event;
+        $event->name = $validatedData['name'];
+        $event->description = $validatedData['description'];
+        $event->image_name = $imageName;
+        $event->time = Carbon::parse($datetime)->toDateTime();
+        $event->user_id = Auth::id();
+        $event->venue_id = Venue::where('name', $request['venue'])->get()->first()->id;
+        $event->host = $host_name;
+        $event->cost = $validatedData['cost'];
+        $event->tickets = $validatedData['amount'];
+        $event->save();
+
+        session()->flash('message', "Event, $event->name , was successfully created");
 
         return redirect()->route('home');
     }
