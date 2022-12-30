@@ -5,7 +5,7 @@
 
 
 
-    <x-form method="POST" action="/store" enctype="multipart/form-data">
+    <x-form method="POST" action="/" enctype="multipart/form-data">
 
         <div class="row form-group">
             <h2 class="text-white">General</h2>
@@ -72,20 +72,20 @@
         <div class="row form-group">
             <h2 class="text-white">Host/Organiser</h2>
             <br>
-            <p> You can attach your user to an event or you can enter a custom host name </p>
+            <p> You can use your user as the host name or enter a custom host name </p>
             <div class="justify-content-center column">
-                <input class="form-check-input" type="checkbox" value="" id="use-user" onclick="useUserCheckBox()" name="use_user">
+                <input type="checkbox" value="1" name="use_user" id="use-user" onclick="useUserCheckBox()">
                 <label class="form-check-label" for="flexCheckDefault">
                     Use user profile as host
                 </label>
             </div>
             <div class="column">
                 <label for="host_name">Host Name</label>
-                <input type="text" class="form-control" id="host_name" name="host_name">
+                <input type="text" class="form-control" id="host_name" name="host">
             </div>
         </div>
         <br>
-        <button class="btn btn-contrast text-white" type="button"> Create Event </button>
+        <button class="btn btn-contrast text-white" type="submit"> Create Event </button>
 
     </x-form>
     <script>
