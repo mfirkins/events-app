@@ -47,10 +47,11 @@
         height: 25px;
         width: auto;
     }
+
 </style>
 
 <body>
-    <div id="app">
+    <div id="app" class="d-flex flex-column min-vh-100">
         <nav id="navbar" class="navbar navbar-expand-md navbar-light shadow-sm">
             <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/') }}">
@@ -76,12 +77,10 @@
                                 Categories
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/category/1">Free Events</a></li>
-                                <li><a class="dropdown-item" href="/category/2">Musical Events</a></li>
-                                <li><a class="dropdown-item" href="/category/3">Professional Talks</a></li>
-                                <li><a class="dropdown-item" href="/category/4">18+ Events</a></li>
-                                <li><a class="dropdown-item" href="/category/5">Online Events</a></li>
-                                <li><a class="dropdown-item" href="/category/6">Sports</a></li>
+                                @foreach (App\Models\Category::all() as $category)
+                                    <li><a class="dropdown-item"
+                                            href="/categories/{{ $category->id }}">{{ $category->name }}</a></li>
+                                @endforeach
 
                             </ul>
                         </li>
@@ -116,14 +115,19 @@
                                     role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                     v-pre>
                                     <img id="profile-picture" class="rounded"
-                                        src={{ asset('storage/images/profile_pictures/' . Auth::user()->image_name) }} </a>
+                                        src={{ asset('storage/images/profile_pictures/' . Auth::user()->profile->image_name) }}
+                                        </a>
 
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="/profiles/{{ Auth::user()->profile->id }}">
+                                            Profile
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
                                         </a>
+
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
@@ -138,7 +142,7 @@
         </nav>
 
         <main id="main-div" class="py-1">
-            <div id="content-div">
+            <div id="content-div container-fluid mb-4">
                 @hasSection('page-name')
                     <h1 class="text-center text-white">@yield('page-name')</h1>
                 @endif
@@ -146,9 +150,11 @@
                 @if ($errors->any())
                     @foreach ($errors->all() as $error)
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
-                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                              </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            </svg>
                             <b>Houston. We have a problem:</b> {{ $error }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
@@ -158,7 +164,7 @@
                 @yield('content')
             </div>
         </main>
-        <footer class="text-center text-lg-start bg-light text-muted">
+        <footer class="mt-auto">
             <div id="navbar"class="text-center p-4 text-white">
                 © 2022 Copyright:
                 <a class="text-reset fw-bold" href="http://localhost">SuperEvent LTD, Morgan Firkins</a>
