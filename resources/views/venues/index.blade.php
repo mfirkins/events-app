@@ -23,7 +23,7 @@
                             alt="event description">
                         <div class="card-body">
                             <h5 class="card-title"><b>{{ $venue->name }}</b></h5>
-                            <h6>City: <b>{{ $venue->name }}</b></h6>
+                            <h6>City: <b>{{ $venue->city }}</b></h6>
                             <h6>Accessibility: <b>
                                     @if ($venue->accessible == 0)
                                         Not Available
