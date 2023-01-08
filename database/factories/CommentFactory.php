@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Event;
-use App\Models\User;
+use App\Models\Profile;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Comment>
@@ -20,8 +20,8 @@ class CommentFactory extends Factory
     {
         return [
             'content' => fake()->paragraph(1),
-            'user_id' => function () {
-                return User::factory()->create(); //could be changed to random row from user table
+            'profile_id' => function () {
+                return Profile::factory()->create();
             },
             'event_id' => function () {
                 return Event::inRandomOrder()->first(); //gets a random event from already created events to assign comment to

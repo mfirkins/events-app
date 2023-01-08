@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Venue;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Category;
-use App\Models\User;
+use App\Models\Profile;
 
 
 /**
@@ -47,14 +47,14 @@ class EventFactory extends Factory
                 break;
             
         }
-        
+
         return [
             'name' => $name,
             'image_name' => $image_path,
             'description' => fake()->paragraph(20),
             'time' => fake()->dateTimeThisDecade(),
-            'user_id' => function () {
-                return User::factory()->create();
+            'profile_id' => function () {
+                return Profile::factory()->create();
             },
             'venue_id' => function () {
                 return Venue::factory()->create();
@@ -63,6 +63,8 @@ class EventFactory extends Factory
             'cost' => fake()->numberBetween(0, 50),
             'tickets' => fake()->numberBetween(0,1000),
         ];
+
+
 
 
 
