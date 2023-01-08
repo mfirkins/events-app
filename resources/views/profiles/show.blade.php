@@ -84,38 +84,38 @@
             </div>
             <div id="column-right" class="col-lg-6 align-items-center">
                 <div class="card-group">
-                    <x-indicator-card icon="bi bi-calendar2-event" header="Events"
+                    <x-IndicatorCard icon="bi bi-calendar2-event" header="Events"
                         colour="linear-gradient(45deg, rgba(148,97,20,1) 24%, rgba(255,154,0,1) 100%);">
                         @if ($profile->events->count() == null)
                             0
                         @else
                             {{ $profile->events->count() }}
                         @endif
-                    </x-indicator-card>
-                    <x-indicator-card icon="bi bi-building" header="Venues"
+                    </x-IndicatorCard>
+                    <x-IndicatorCard icon="bi bi-building" header="Venues"
                         colour="linear-gradient(45deg, rgba(148,20,111,1) 24%, rgba(255,0,202,1) 100%);">
                         @if ($profile->venues->count() == null)
                             0
                         @else
                             {{ $profile->venues->count() }}
                         @endif
-                    </x-indicator-card>
-                    <x-indicator-card icon="bi bi-chat-dots" header="Comments"
+                    </x-IndicatorCard>
+                    <x-IndicatorCard icon="bi bi-chat-dots" header="Comments"
                         colour="linear-gradient(45deg, rgba(20,117,148,1) 24%, rgba(0,202,255,1) 100%);">
                         @if ($profile->comments->count() == null)
                             0
                         @else
                             {{ $profile->comments->count() }}
                         @endif
-                    </x-indicator-card>
-                    <x-indicator-card icon="bi bi-tags" header="Categories"
+                    </x-IndicatorCard>
+                    <x-IndicatorCard icon="bi bi-tags" header="Categories"
                         colour="linear-gradient(45deg, rgba(20,148,20,1) 24%, rgba(0,255,59,1) 100%);">
                         @if ($profile->categories->count() == null)
                             0
                         @else
                             {{ $profile->categories->count() }}
                         @endif
-                    </x-indicator-card>
+                    </x-IndicatorCard>
                 </div>
             </div>
         </div>

@@ -26,20 +26,6 @@
 
     }
 
-    @keyframes gradient {
-        0% {
-            background-position: 0% 50%;
-        }
-
-        50% {
-            background-position: 100% 50%;
-        }
-
-        100% {
-            background-position: 0% 50%;
-        }
-    }
-
     #navbar {
         background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
     }
@@ -105,7 +91,8 @@
                             @endif
                             @if (Auth::user()->hasRole('Admin'))
                                 <li class="nav-item">
-                                    <a class="btn btn-contrast-3 text-card-bg" href="{{ route('categories.create') }}">+ Create
+                                    <a class="btn btn-contrast-3 text-card-bg"
+                                        href="{{ route('categories.create') }}">+ Create
                                         a Category</a>
                                 </li>
                             @endif
