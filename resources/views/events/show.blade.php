@@ -75,25 +75,25 @@
     <div id="details">
         <div class="container-fluid mb-4">
             <div class="card-group">
-                <x-indicator-card colour="linear-gradient(45deg, #087bff, #479dff)" icon="bi bi-brush" header="Created by">
+                <x-IndicatorCard colour="linear-gradient(45deg, #087bff, #479dff)" icon="bi bi-brush" header="Created by">
                     <a style="color: white"href='/profiles/{{ $event->profile->id }}'>{{ $event->profile->user->name }}</a>
-                </x-indicator-card>
+                </x-IndicatorCard>
                 @if ($event->venue->accessible == 0)
-                    <x-indicator-card colour="linear-gradient(45deg, rgba(148,20,20,1) 24%, rgba(255,0,0,1) 100%);"
+                    <x-IndicatorCard colour="linear-gradient(45deg, rgba(148,20,20,1) 24%, rgba(255,0,0,1) 100%);"
                         icon="bi bi-universal-access-circle" header="Accessibility">
                         Not Available
-                    </x-indicator-card>
+                    </x-IndicatorCard>
                 @else
-                    <x-indicator-card colour="linear-gradient(45deg, rgba(20,148,48,1) 24%, rgba(0,255,4,1) 100%);"
+                    <x-IndicatorCard colour="linear-gradient(45deg, rgba(20,148,48,1) 24%, rgba(0,255,4,1) 100%);"
                         icon="bi bi-universal-access-circle" header="Accessibility">
                         Available
-                    </x-indicator-card>
+                    </x-IndicatorCard>
                 @endif
 
-                <x-indicator-card colour="linear-gradient(45deg, rgba(127,20,148,1) 24%, rgba(226,0,255,1) 100%);"
+                <x-IndicatorCard colour="linear-gradient(45deg, rgba(127,20,148,1) 24%, rgba(226,0,255,1) 100%);"
                     icon="bi bi-buildings" header="City">
                     {{ $event->venue->city }}
-                </x-indicator-card>
+                </x-IndicatorCard>
             </div>
         </div>
         <br>
