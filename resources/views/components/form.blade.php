@@ -22,6 +22,20 @@
         align-items: center;
     }
 
+    #category-dropdown-column{
+        float: left;
+        width: 85%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #category-button-column{
+        float: left;
+        width: 15%;
+        justify-content: center;
+        align-items: center;
+    }
+
 
 
     label {
