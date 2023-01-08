@@ -3,8 +3,6 @@
 @section('page-name', 'Create an Event')
 @section('content')
 
-
-
     <x-form method="POST" action="/" enctype="multipart/form-data">
 
         <div class="row form-group">
@@ -16,24 +14,37 @@
                 <br>
                 <label for="description">Description</label>
                 <textarea class="form-control" id="description" rows="6" name="description"></textarea>
+                <label for="category">Categories</label>
+                <br>
+                <div id="error-div">
+                </div>
+                <label for="category">Selected Categories</label>
+                <textarea style="resize: none"class="form-control" id="selected-categories" name="selected-categories" rows="3"
+                    readonly></textarea>
+                <br>
+                <label for="category">Add a category</label>
+                <div class="row">
+                    <select class="form-control" id="category">
+                        @foreach ($categories as $category)
+                            <option>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <br>
+                    <button type="button" class="btn btn-contrast text-white" onclick="addCategory()"> Add category to
+                        event </button>
+
+                </div>
 
             </div>
             <div class="column">
-                <br>
-                <label for="category">Category</label>
-                <select class="form-control" id="category" name="category">
-                    @foreach ($categories as $category)
-                        <option>
-                            {{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
                 <br>
                 <label for="image">Image</label>
                 <input id="image" type="file" class="form-control" name="image">
                 <br>
                 <label for="date">Date</label>
-                <input id="date" class="form-control" type="date" name="date"/>
+                <input id="date" class="form-control" type="date" name="date" />
                 <br>
                 <label for="time">Time</label>
                 <input type="time" id="time" name="time">
@@ -95,6 +106,19 @@
                 document.getElementById('host_name').disabled = true;
             } else {
                 document.getElementById('host_name').disabled = false;
+            }
+        }
+
+        function addCategory() {
+            const selectedCategories = document.getElementById('selected-categories');
+            const categoryDropdown = document.getElementById('category');
+            const selectedCategory = categoryDropdown.value;
+            if (selectedCategories.value.indexOf(selectedCategory) != -1) {
+                document.getElementById('error-div').innerHTML =
+                    "<div class='alert alert-danger fade show' role='alert'><i class='bi bi-exclamation-triangle-fill'></i><b> You can't add duplicate categories</b>";
+            } else {
+                selectedCategories.value += selectedCategory
+                selectedCategories.value += ","
             }
         }
     </script>
