@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
+
 class UserTableSeeder extends Seeder
 {
     /**
@@ -16,10 +17,8 @@ class UserTableSeeder extends Seeder
     public function run()
     {
 
-        //no need for a seeder as users get created via other seeders due to factory relationships
-
+        //no need for user table seeder as users are created in factories
         
-
 
 
     }
