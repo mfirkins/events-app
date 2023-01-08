@@ -6,10 +6,6 @@ $font-family-sans-serif: 'Hanken Grotesk', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
-$primary: #3A7899;
-$secondary: #70afce;
-$contrast: #5cb85c;
-$card-bg: #ffffff;
 
 $theme-colors: (
   "primary": #3A7899,
@@ -17,5 +13,6 @@ $theme-colors: (
   "contrast": #5cb85c,
   "card-bg": #ffffff,
   "danger": #ff4136,
-  "contrast-2": #0275d8
-);
+  "contrast-2": #0275d8,
+  "contrast-3": #cd02d8,
+  "text-muted": #ffffff)
