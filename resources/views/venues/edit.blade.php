@@ -1,20 +1,15 @@
 @extends('layouts.app')
 
-@section('page-title', 'Edit Venue')
+@section('page-name', 'Edit Venue')
 
 @section('content')
 
-    <x-form method="POST" action="/venues" enctype="multipart/form-data">
+    <x-form method="POST" action="{{ route('venues.update', $venue->id) }}" enctype="multipart/form-data">
         <div class="row form-group">
             <div class="column">
                 <br>
-                <label for="venueName">Venue Name</label>
-                <input type="text" class="form-control" id="venueName" value="{{ $venue->name }}" placeholder="My Cool Venue"
-                    name="name">
-                <br>
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" value="{{ $venue->description }}" rows="6" name="description"></textarea>
-
+                <textarea class="form-control" id="description" rows="6" name="description">{{ $venue->description }}</textarea>
             </div>
             <div class="column">
                 <br>
@@ -23,9 +18,6 @@
                     <option>Available</option>
                     <option>Unavailable</option>
                 </select>
-                <br>
-                <label for="image">Image</label>
-                <input id="image" type="file" class="form-control" value="{{ $venue->image_name }}" name="image">
                 <br>
                 <label for="city">City</label>
                 <input type="text" class="form-control" id="city" placeholder="Birmingham"
