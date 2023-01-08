@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Event;
-use App\Models\User;
+use App\Models\Profile;
 use App\Models\Category;
 
 class EventTableSeeder extends Seeder
@@ -18,7 +18,7 @@ class EventTableSeeder extends Seeder
      */
     public function run()
     {
-        Event::factory()->count(50)->for(User::factory()->create())->create()->each(function ($event) {
+        Event::factory()->count(50)->create()->each(function ($event) {
 
             $categories = Category::inRandomOrder()->get();
             // select a random number of categories then assign a random category to an event
