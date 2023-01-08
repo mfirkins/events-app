@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Profile;
 
 class RegisterController extends Controller
 {
@@ -65,14 +66,31 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $filename = $data['email'] . '.' . $data['profile-picture']->extension();
-        $data['profile-picture']->storeAs('images/profile_pictures', $filename, 'public');
+        if ($data['profile-picture'] != null) {
+            $filename = $data['email'] . '.' . $data['profile-picture']->extension();
+            $data['profile-picture']->storeAs('images/profile_pictures', $filename, 'public');
 
-        return User::create([
+        } else {
+            $filename = "default.png";
+        }
+
+
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'image_name' => $filename,
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->assignRole('Visitor');
+
+        $profile = Profile::create([
+            'user_id' => $user->id,
+            'image_name' => $filename,
+
+        ]);
+
+
+        return $user;
     }
 }
