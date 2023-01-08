@@ -13,11 +13,11 @@
 
     #event-details {
         text-align: center;
-        position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
         color: white;
+        min-height: 50vh;
+        width: 100vw;
     }
 
     .iframe-rwd {
@@ -52,23 +52,26 @@
 @section('title', 'Event Details')
 
 @section('content')
-    <div id="event-detail-image" class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
-        <div id="event-details">
-            <h1>{{ $event->name }}</h1>
-            <h2>City: {{ $event->venue->city }}</h2>
-            <h3>Host: {{ $event->host }}</h3>
-            @if (Auth::user() == $event->profile->user)
-                <a class="btn btn-contrast text-white" href="/{{ $event->id }}/edit"> Edit Event </a>
-                <form action="{{ route('events.destroy', $event->id) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <br>
-                    <button class="btn btn-danger text-white" type="submit">Delete Event</button>
-                </form>
-            @endif
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div id="event-detail-image-box" class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
+        <div id="event-detail-image">
+            <div id="event-details" class="d-flex flex-column align-items-center justify-content-center">
+                <h1>{{ $event->name }}</h1>
+                <h2>City: {{ $event->venue->city }}</h2>
+                <h3>Host: {{ $event->host }}</h3>
+                @if (Auth::check() and
+                    (Auth::user() == $event->profile->user or Auth::user()->hasRole(['Admin', 'Verified Venue'])))
+                    <a class="btn btn-contrast text-white" href="/{{ $event->id }}/edit"> Edit Event </a>
+                    <form action="{{ route('events.destroy', $event->id) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <br>
+                        <button class="btn btn-danger text-white" type="submit">Delete Event</button>
+                    </form>
+                @endif
+            </div>
         </div>
     </div>
-
     <div id="details">
         <div class="container-fluid mb-4">
             <div class="card-group">
@@ -88,8 +91,8 @@
                 @endif
 
                 <x-indicator-card colour="linear-gradient(45deg, rgba(127,20,148,1) 24%, rgba(226,0,255,1) 100%);"
-                    icon="bi bi-ticket-perforated" header="Tickets">
-                    From £{{ $event->cost }}
+                    icon="bi bi-buildings" header="City">
+                    {{ $event->venue->city }}
                 </x-indicator-card>
             </div>
         </div>
@@ -98,7 +101,13 @@
             <h3 class="h3">Event Details</h3>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                    <button class="nav-link active" id="comments-tab" data-bs-toggle="tab"
+                        data-bs-target="#comments-tab-pane" type="button" role="tab" aria-controls="comments-tab-pane"
+                        aria-selected="true">Comments</button>
+
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="description-tab" data-bs-toggle="tab"
                         data-bs-target="#description-tab-pane" type="button" role="tab"
                         aria-controls="description-tab-pane" aria-selected="true">Description</button>
                 </li>
@@ -111,16 +120,11 @@
                     <button class="nav-link" id="venue-tab" data-bs-toggle="tab" data-bs-target="#venue-tab-pane"
                         type="button" role="tab" aria-controls="venue-tab-pane" aria-selected="true">Venue</button>
                 </li>
-                <li class="nav-item">
-                    <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments-tab-pane"
-                        type="button" role="tab" aria-controls="comments-tab-pane"
-                        aria-selected="true">Comments</button>
 
-                </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="description-tab-pane" role="tabpanel"
-                    aria-labelledby="description-tab" tabindex="0">
+                <div class="tab-pane fade" id="description-tab-pane" role="tabpanel" aria-labelledby="description-tab"
+                    tabindex="0">
 
                     <p>
                         {{ $event->description }}
@@ -147,60 +151,152 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="comments-tab-pane" role="tabpanel" aria-labelledby="comments-tab"
+                <div class="tab-pane fade show active" id="comments-tab-pane" role="tabpanel" aria-labelledby="comments-tab"
                     tabindex="0">
                     <div class="row d-flex justify-content-center">
-                        <div class="col-md-8 col-lg-6">
-                            @if (Auth::check())
-                                <form method="post" action="/comments" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="text" name="content" placeholder="+ Add a new comment"
-                                        class="form-control">
-                                    <button class="btn btn-contrast text-white" type="submit">Post Comment</button>
-                                </form>
-                            @else
-                                <form method="post" action="/comments" enctype="multipart/form-data">
-                                    <p> You need to log in to be able to comment </p>
-                                    <input type="text" name="content" placeholder="+ Add a new comment"
-                                        class="form-control" disabled>
-                                    <button class="btn btn-contrast text-white" type="submit" disabled>Post
-                                        Comment</button>
-                                </form>
-                            @endif
-                            <div class="container-fluid mb-4">
-                                <div class="card-group">
-                                    @foreach ($comments as $comment)
-                                        <div class="col mt-4">
-                                            <div class="card shadow-lg p-1 mx-auto">
-                                                <div class="card-body">
-                                                    <p>{{ $comment->content }}</p>
-                                                    <div class="d-flex justify-content-between">
-                                                        <div class="d-flex flex-row align-items-center">
-                                                            <img src="/storage/images/profile_pictures/{{ $comment->profile->image_name }}"
-                                                                alt="avatar" width="25" height="25" />
-                                                            <a href="/profiles/{{ $comment->profile->id }}"
-                                                                class="small mb-0 ms-2">{{ $comment->profile->user->name }}
-                                                            </a>
-                                                        </div>
-                                                        <div class="d-flex flex-row align-items-center">
-                                                            <p class="small text-muted mb-0">Upvote?</p>
-                                                            <i class="far fa-thumbs-up mx-2 fa-xs text-black"
-                                                                style="margin-top: -0.16rem;"></i>
-                                                            <p class="small text-muted mb-0">{{ $comment->likes }}</p>
-                                                        </div>
+                        <div id="error-msg-container">
+
+                        </div>
+
+                        @if (Auth::check())
+                            <br>
+                            <form id="comment-form" method="post" data-url="{{ route('comments.store') }}"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <input id="comment-content" type="text" name="content"
+                                    placeholder="+ Add a new comment" class="form-control">
+                                <input type="hidden" id='event_id' value={{ $event->id }}>
+                                <br>
+                                <button id="comment-submit" class="btn btn-contrast text-white" type="submit">Post
+                                    Comment</button>
+                            </form>
+                        @else
+                            <br>
+                            <form id="comment-form" data-url="{{ route('comments.store') }}" method="post"
+                                enctype="multipart/form-data">
+                                <p> You need to log in to be able to comment </p>
+                                <input id="comment-content" type="text" name="content"
+                                    placeholder="+ Add a new comment" class="form-control" disabled>
+                                <input type="hidden" id='event_id' value={{ $event->id }}>
+                                <br>
+                                <button id="comment-submit" class="btn btn-contrast text-white" type="submit"
+                                    disabled>Post
+                                    Comment</button>
+                            </form>
+                        @endif
+                        <div class="container-fluid mb-4">
+                            <div class="card-group">
+                                @foreach ($comments as $comment)
+                                    <div class="col mt-4">
+                                        <div class="card shadow-lg p-1 mx-auto">
+                                            <div class="card-body">
+                                                <p>{{ $comment->content }}</p>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-row align-items-center">
+                                                        <img src="/storage/images/profile_pictures/{{ $comment->profile->image_name }}"
+                                                            alt="avatar" width="25" height="25" />
+                                                        <a href="/profiles/{{ $comment->profile->id }}"
+                                                            class="small mb-0 ms-2">{{ $comment->profile->user->name }}
+                                                        </a>
+                                                    </div>
+                                                    <div class="d-flex flex-row align-items-center">
+                                                        @if (Auth::check() and (Auth::user()->id == $comment->profile->user->id or Auth::user()->hasRole('Admin')))
+                                                            <form id="comment-delete" method="POST"
+                                                                data-url="{{ route('comments.destroy', $comment->id) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button style="margin-right: 5px;" type="submit"
+                                                                    class="btn btn-danger text-card-bg"><i
+                                                                        class="bi bi-trash"></i></button>
+                                                                <a href="{{ route('comments.edit', $comment->id) }}"
+                                                                    style="margin-right: 5px;" type="button"
+                                                                    class="btn btn-contrast-2 text-card-bg"><i
+                                                                        class="bi bi-pencil"></i></a>
+
+                                                            </form>
+                                                        @endif
+                                                        <form method="POST" action="{{ route('comments.liked') }}">
+                                                            @csrf
+                                                            <input type="hidden" name="comment_id"
+                                                                value="{{ $comment->id }}">
+                                                            <button type="submit" class="btn btn-contrast"><i
+                                                                    class="bi bi-hand-thumbs-up text-white"></i></button>
+                                                        </form>
+                                                        <p class="small text-muted mb-0">{{ $comment->likes }}
+                                                            likes</p>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
-
-                                </div>
-                                {{ $comments->links() }}
+                                    </div>
+                                @endforeach
                             </div>
-
+                            {{ $comments->links() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+            $("#comment-form").on('submit', function(submitEvent) {
+                submitEvent.preventDefault();
+
+                var content = $("#comment-content").val();
+                var event_id = $("#event_id").val();
+
+                $.ajax({
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: $('#comment-form').attr('data-url'),
+                    data: {
+                        content: content,
+                        event_id: event_id
+                    },
+                    success: function(data) {
+                        if (!$.isEmptyObject(data.error)) {
+                            printErrorMsg(data.error);
+                        }
+                        location.reload();
+                    }
+                });
+
+            });
+
+            $("#comment-delete").on('submit', function(submitEvent) {
+                submitEvent.preventDefault();
+
+                var comment_id = $("#comment_id").val();
+
+                $.ajax({
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: $('#comment-delete').attr('data-url'),
+                    data: {
+                        comment_id: comment_id,
+                    },
+                    success: function(data) {
+                        if (!$.isEmptyObject(data.error)) {
+                            printErrorMsg(data.error);
+                        }
+                        location.reload();
+                    }
+                });
+
+            });
+
+            function printErrorMsg(msg) {
+                $("#error-msg-container").html(
+                    '<div id="error-msg" class="alert alert-danger fade show" role="alert"><i class="bi bi-exclamation-triangle-fill"></i><b> Houston. We have a problem</b><ui></ui></div>'
+                );
+                $(".print-error-msg").css('display', 'block');
+                $.each(msg, function(key, value) {
+                    $("#error-msg").find("ul").append('<li>' + value + '</li>');
+                });
+            }
+        </script>
     @endsection

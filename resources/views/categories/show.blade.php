@@ -12,6 +12,19 @@
 @section('page-name', $category->name)
 @section('content')
     <div class="container-fluid mb-4">
+        @if (Auth::check())
+            @if (Auth::user()->hasRole('Admin'))
+                <form method="POST" action="{{ route('categories.destroy', $category->id) }}">
+                    @csrf
+                    {{ method_field('DELETE') }}
+                    <button style="margin-bottom: 5px;"type="submit"
+                        class="btn btn-danger text-card-bg">Delete
+                        Category</button>
+                </form>
+                <a class="btn btn-contrast-2 text-card-bg" style="margin-right: 5px" href="{{ route('categories.edit', $category->id) }}">Edit
+                    Category</a>
+            @endif
+        @endif
         <div class="card-group">
             @foreach ($events->sortBy('time') as $event)
                 <div class="col mt-4">

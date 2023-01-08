@@ -13,11 +13,10 @@
 
     #venue-details {
         text-align: center;
-        position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
         color: white;
+        min-height: 50vh;
     }
 
     .iframe-rwd {
@@ -44,11 +43,12 @@
 @section('title', 'Event Details')
 
 @section('content')
+<div style="background-color: white">
     <div id="venue-detail-image" class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
-        <div id="venue-details">
+        <div id="venue-details" class="d-flex flex-column align-items-center justify-content-center">
             <h1>{{ $venue->name }}</h1>
-            <h5>{{ $venue->description }}</h5>
-            @if (Auth::user() == $venue->profile->user)
+            <h5 class="w-75">{{ $venue->description }}</h5>
+            @if (Auth::check() and (Auth::user() == $venue->profile->user or Auth::user()->hasRole('Admin')))
                 <a class="btn btn-contrast text-white" href="/venues/{{ $venue->id }}/edit"> Edit Venue </a>
                 <form action="{{ route('venues.destroy', $venue->id) }}" method="post">
                     @csrf
@@ -111,4 +111,5 @@
             src="https://maps.google.com/maps?q={{ $venue->latitude }},{{ $venue->longitude }}&output=embed"></iframe>>
     </div>
     </div>
+</div>
 @endsection
