@@ -9,7 +9,15 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name'
+    ];
+
     public function events(){
         return $this->belongsToMany(Event::class);
+    }
+
+    public function profile(){
+        return $this->belongsTo(Profile::class);
     }
 }
