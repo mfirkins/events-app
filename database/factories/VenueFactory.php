@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,8 +28,8 @@ class VenueFactory extends Factory
             'description' => fake()->paragraph(20),
             'city' => $city,
             'image_name' => $image_name,
-            'user_id' => function () {
-                return User::factory()->create();
+            'profile_id' => function () {
+                return Profile::inRandomOrder()->get()->first();
             },
             'longitude' => fake()->longitude($min = -180, $max = 180),
             'latitude' => fake()->latitude($min = -90, $max = 90),
