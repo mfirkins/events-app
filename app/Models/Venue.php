@@ -9,11 +9,16 @@ class Venue extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'accessible'
+    ];
+
     public function events(){
         return $this->hasMany(Event::class);
     }
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function profile(){
+        return $this->belongsTo(Profile::class);
     }
 }
