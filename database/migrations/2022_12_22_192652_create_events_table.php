@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('image_name');
             $table->longText('description');
             $table->timestamp('time');
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('profile_id')->unsigned();
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade')->onUpdate('cascade');
             $table->bigInteger('venue_id')->unsigned();
-            $table->foreign('venue_id')->references('id')->on('events')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('venue_id')->references('id')->on('venues')->onDelete('cascade')->onUpdate('cascade');
             $table->string('host');
             $table->double('cost');
             $table->integer('tickets')->length(1000);
