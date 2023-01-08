@@ -16,11 +16,12 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
 </head>
 <style>
     #app {
         background: linear-gradient(-45deg, #ee7752, #e73c7e, #70afce, #23d5ab);
-        background-size: 400% 400%;
         animation: gradient 12s ease infinite;
 
     }
@@ -47,7 +48,6 @@
         height: 25px;
         width: auto;
     }
-
 </style>
 
 <body>
@@ -87,10 +87,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{{ route('venues.index') }}">Venues</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="btn btn-contrast text-card-bg" href="{{ route('create_event') }}">+ Create an
-                                Event</a>
-                        </li>
+                        @if (Auth::check())
+                            @if (Auth::user()->hasRole('Visitor') or
+                                Auth::user()->hasRole('Verified Venue') or
+                                Auth::user()->hasRole('Admin'))
+                                <li class="nav-item">
+                                    <a class="btn btn-contrast text-card-bg" style="margin-right: 5px"
+                                        href="{{ route('create_event') }}">+ Create an
+                                        Event</a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->hasRole('Verified Venue') or Auth::user()->hasRole('Admin'))
+                                <li class="nav-item">
+                                    <a class="btn btn-contrast-2 text-card-bg" style="margin-right: 5px"
+                                        href="{{ route('create_venue') }}">+ Create a Venue</a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->hasRole('Admin'))
+                                <li class="nav-item">
+                                    <a class="btn btn-contrast-3 text-card-bg" href="{{ route('categories.create') }}">+ Create
+                                        a Category</a>
+                                </li>
+                            @endif
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
