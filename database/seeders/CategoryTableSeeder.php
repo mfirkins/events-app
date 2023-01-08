@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Category;
+use App\Models\Profile;
 
 class CategoryTableSeeder extends Seeder
 {
@@ -22,6 +23,7 @@ class CategoryTableSeeder extends Seeder
 
         foreach($category_names as $name){
             $category = new Category;
+            $category->profile_id = Profile::factory()->create()->id;
             $category->name = $name;
             $category->save();
         }
